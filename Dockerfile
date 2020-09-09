@@ -9,7 +9,6 @@ ADD https://raw.githubusercontent.com/fergusmclellan/image_creator/master/requir
 ADD https://raw.githubusercontent.com/fergusmclellan/image_creator/master/image_creation_app.py /app/
 
 # copy the Courier New font file
-#ARG src="/System/Library/Fonts/Supplemental/Courier New.ttf"
 COPY cour.ttf /app/cour.ttf
 
 WORKDIR /app
