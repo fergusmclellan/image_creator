@@ -19,3 +19,5 @@ class TestHello(unittest.TestCase):
         print('Test confirmed that image received!')
 if __name__ == '__main__':
     unittest.main()
+
+print('asdfasdf')
