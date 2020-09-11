@@ -10,6 +10,9 @@ MAX_HEIGHT_PX = 600
 IMAGE_FONT = ImageFont.truetype('cour.ttf', FONT_HEIGHT_SIZE_PX)
 
 
+app = Flask(__name__)
+
+@app.route('/api/create_image', methods=['POST'])
 class CodeText:
     def __init__(self, text, width, lines):
         self.text = text
@@ -33,9 +36,6 @@ def find_lines_and_width(text):
         no_of_lines = 1
     return max_width, no_of_lines
 
-app = Flask(__name__)
-
-@app.route('/api/create_image', methods=['POST'])
 def add_message():
     content = request.json
     my_code = CodeText(content['code_text'],
