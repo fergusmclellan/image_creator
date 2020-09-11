@@ -39,7 +39,7 @@ app = Flask(__name__)
 def add_message():
     content = request.json
     my_code = CodeText(content['code_text'],
-                       *(findLinesAndWidth(content['code_text']))
+                       *(findLinesAndWidth(content['code_text'])))
     image_filename = 'output.png'
 
     my_code.width_pixels = (self.width * FONT_WIDTH_SIZE_PX) +
