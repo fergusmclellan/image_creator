@@ -38,8 +38,7 @@ def find_lines_and_width(text):
 
 def add_message():
     content = request.json
-    my_code = CodeText(content['code_text'],
-                       *(findLinesAndWidth(content['code_text'])))
+    my_code = CodeText(content['code_text'], *(findLinesAndWidth(content['code_text'])))
     image_filename = 'output.png'
 
     my_code.width_pixels = (self.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
