@@ -1,5 +1,8 @@
 pipeline {
-    agent { /usr/local/bin/docker { image 'python:3.7.2' } }
+    environment { 
+        PATH = '/usr/local/bin'
+    }
+    agent { docker { image 'python:3.7.2' } }
     stages {
         stage('build') {
             steps {
