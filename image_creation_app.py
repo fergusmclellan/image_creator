@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 FONT_SIZE_PX = 15
 BORDER_PADDING_PX = 6
-IMAGE_FONT = ImageFont.truetype('cour.ttf', FONT_SIZE_PX)
+IMAGE_FONT = ImageFont.truetype('/app/cour.ttf', FONT_SIZE_PX)
 
 app = Flask(__name__)
 
