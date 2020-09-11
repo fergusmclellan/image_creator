@@ -7,8 +7,7 @@ pipeline {
                     sh 'pip install Pillow --user'
                     sh 'pip install flask'
                     sh 'pip list'
-                    sh 'mkdir /app'
-                    sh 'wget https://github.com/fergusmclellan/image_creator/raw/master/cour.ttf -O /app/cour.ttf'
+                    sh 'wget https://github.com/fergusmclellan/image_creator/raw/master/cour.ttf'
                 }
             }
         }
