@@ -5,7 +5,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'pip install Pillow --user'
-                    sh 'pip install flask send_file'
+                    sh 'pip install flask'
                     sh 'pip list'
                 }
             }
