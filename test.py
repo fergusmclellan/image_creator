@@ -1,5 +1,5 @@
 import unittest
-from image_creation_app import image_creation_app
+from image_creation_app import app
 class TestHello(unittest.TestCase):
     def setUp(self):
         app.testing = True
