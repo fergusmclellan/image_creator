@@ -42,11 +42,8 @@ def add_message():
                        *(findLinesAndWidth(content['code_text'])))
     image_filename = 'output.png'
 
-    my_code.width_pixels = (self.width * FONT_WIDTH_SIZE_PX) +
-                           (BORDER_PADDING_PX * 2)
-    my_code.height_pixels = ((self.lines - 1) * (FONT_HEIGHT_SIZE_PX +
-                            LINE_SPACING_PX)) + FONT_HEIGHT_SIZE_PX +
-                            (BORDER_PADDING_PX * 2)
+    my_code.width_pixels = (self.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
+    my_code.height_pixels = ((self.lines - 1) * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + FONT_HEIGHT_SIZE_PX + (BORDER_PADDING_PX * 2)
 
     if my_code.width_pixels > MAX_WIDTH_PX:
         my_code.state = "TOO WIDE!"
@@ -62,13 +59,10 @@ def add_message():
 
     drawing = ImageDraw.Draw(img)
     drawing.text((BORDER_PADDING_PX, BORDER_PADDING_PX), my_code.text, font=IMAGE_FONT, fill=('black'))
-    drawing.rectangle([(0,0), (my_code.width_pixels, my_code.height_pixels)],
-                        fill=None, outline='black',width=2)
+    drawing.rectangle([(0,0), (my_code.width_pixels, my_code.height_pixels)], fill=None, outline='black',width=2)
     # border appears as only 1 pixel width along right and bottom sides, so draw an extra line
-    drawing.line((1, my_code.width_pixels-2, my_code.width_pixels-1,
-                my_code.height_pixels-2), width=1, fill='black')
-    drawing.line((my_code.width_pixels-2, 1, my_code.width_pixels-2, my_code.width_pixels-1),
-                width=1, fill='black')
+    drawing.line((1, my_code.width_pixels-2, my_code.width_pixels-1, my_code.height_pixels-2), width=1, fill='black')
+    drawing.line((my_code.width_pixels-2, 1, my_code.width_pixels-2, my_code.width_pixels-1), width=1, fill='black')
     img.save(image_filename)
 
     return send_file(image_filename, mimetype='image/png')
