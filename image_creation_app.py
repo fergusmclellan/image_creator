@@ -7,7 +7,7 @@ LINE_SPACING_PX = 2
 BORDER_PADDING_PX = 6
 MAX_WIDTH_PX = 950
 MAX_HEIGHT_PX = 600
-IMAGE_FONT = ImageFont.truetype('cour.ttf', FONT_SIZE_PX)
+IMAGE_FONT = ImageFont.truetype('cour.ttf', FONT_HEIGHT_SIZE_PX)
 
 
 class CodeText:
