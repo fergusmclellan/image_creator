@@ -4,7 +4,8 @@ pipeline {
         stage('build') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'pip install flask'
+                    sh 'pip install Pillow'
+                    sh 'pip install flask send_file'
                     sh 'pip list'
                 }
             }
