@@ -39,6 +39,8 @@ def find_lines_and_width(text):
 def add_message():
     content = request.json
     max_width, no_of_lines = find_lines_and_width(content['code_text'])
+    print("max width: " + str(max_width))
+    print("max lines: " + str(no_of_lines))
     my_code = CodeText(content['code_text'], max_width, no_of_lines)
     image_filename = 'output.png'
 
