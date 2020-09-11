@@ -16,5 +16,6 @@ class TestHello(unittest.TestCase):
         response = self.app.post('/api/add_message/1234', json={"mytext": my_multiline_input})
         self.assertEqual(response.status, '200 OK')
         self.assertEqual(response.mimetype, 'image/png')
+        print('Test confirmed that image received!')
 if __name__ == '__main__':
     unittest.main()
