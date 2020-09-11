@@ -38,7 +38,8 @@ def find_lines_and_width(text):
 
 def add_message():
     content = request.json
-    my_code = CodeText(content['code_text'], *(find_lines_and_width(content['code_text'])))
+    max_width, no_of_lines = find_lines_and_width(content['code_text'])
+    my_code = CodeText(content['code_text'], max_width, no_of_lines)
     image_filename = 'output.png'
 
     my_code.width_pixels = (self.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
@@ -50,7 +51,7 @@ def add_message():
         my_code.state = "TOO MANY LINES!"
 
     if my_code.state != "OK":
-        my_code.text = self.state
+        my_code.text = my_code.state
         my_code.width_pixels = 160
         my_code.height_pixels = 50
 
