@@ -3,19 +3,13 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'pip install flask'
-                    sh 'pip list'
-                }
+                sh 'pip install flask'
+                sh 'pip list'
             }
         }
         stage('test') {
             steps {
-                withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'pip install flask'
-                    sh 'pip list'
-                    sh 'python test.py'
-                }
+                sh 'python test.py'
             }
         }
     }
