@@ -49,7 +49,7 @@ def create_image(uuid):
         my_code.width_pixels = 160
         my_code.height_pixels = 50
 
-    img = Image.new('RGB', (text_pixel_width, text_pixel_height), color = ('white'))
+    img = Image.new('RGB', (my_code.width_pixels, my_code.height_pixels), color = ('white'))
 
     drawing = ImageDraw.Draw(img)
     drawing.text((BORDER_PADDING_PX, BORDER_PADDING_PX), my_code.text, font=IMAGE_FONT, fill=('black'))
