@@ -12,7 +12,7 @@ class TestHello(unittest.TestCase):
         app.testing = True
         self.app = app.test_client()
     def test_hello(self):
-        response = self.app.post('/api/create_image', json={"code_text": my_multiline_input})
+        response = self.app.post('/api/create_image/1234', json={"code_text": my_multiline_input})
         self.assertEqual(response.status, '200 OK')
         self.assertEqual(response.mimetype, 'image/png')
         print('Test confirmed that image received!')
