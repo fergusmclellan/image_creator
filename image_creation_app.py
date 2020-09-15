@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 from PIL import Image, ImageDraw, ImageFont
 from codetext import CodeText
+import re
 
 FONT_HEIGHT_SIZE_PX = 15
 FONT_WIDTH_SIZE_PX = 9
@@ -35,9 +36,15 @@ def create_image(uuid):
     #print("max lines: " + str(no_of_lines))
     my_code = CodeText(content['code_text'], max_width, no_of_lines)
     image_filename = 'output.png'
+    
+    # check for " item X ", where X is a number. Text must be surrounded by 2x spaces either side
+    target_pattern = re.compile(r'\s\sitem\s[0-9]*\s\s')
+    no_of_items = len(target_pattern.findall(my_code.text))
 
+    #print(no_of_items)
     my_code.width_pixels = (my_code.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
-    my_code.height_pixels = ((my_code.lines - 1) * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + FONT_HEIGHT_SIZE_PX + (BORDER_PADDING_PX * 2)
+    my_code.height_pixels = ((my_code.lines - 1) * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + FONT_HEIGHT_SIZE_PX + (BORDER_PADDING_PX * 2) + (no_of_items * (4 + BORDER_PADDING_
+PX))
 
     if my_code.width_pixels > MAX_WIDTH_PX:
         my_code.state = "TOO WIDE!"
@@ -49,10 +56,33 @@ def create_image(uuid):
         my_code.width_pixels = 160
         my_code.height_pixels = 50
 
+    text_start_height = BORDER_PADDING_PX
     img = Image.new('RGB', (my_code.width_pixels, my_code.height_pixels), color = ('white'))
-
+    
     drawing = ImageDraw.Draw(img)
-    drawing.text((BORDER_PADDING_PX, BORDER_PADDING_PX), my_code.text, font=IMAGE_FONT, fill=('black'))
+    text_by_lines = my_code.text.split('\n')
+    for line in text_by_lines:
+        targets = target_pattern.findall(line)
+        if len(targets) > 0:
+            box_y_start_pos = text_start_height + 3
+            text_start_height = text_start_height + BORDER_PADDING_PX
+            drawing.text((BORDER_PADDING_PX, text_start_height), line, font=IMAGE_FONT, fill=('black'))
+            text_start_height = text_start_height + (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX) + BORDER_PADDING_PX
+            match_count = 0
+            for pattern_match in target_pattern.finditer(line):
+                #print(pattern_match)
+                box_x_start_pos = (pattern_match.start(match_count) + 1.75) * FONT_WIDTH_SIZE_PX
+                box_x_end_pos = box_x_start_pos + ((pattern_match.end(match_count) - pattern_match.start(match_count) - 2.25) * FONT_WIDTH_SIZE_PX)
+                #print(str(box_x_start_pos))
+                #print(str(box_x_end_pos))
+                drawing.rectangle([(box_x_start_pos, box_y_start_pos), box_x_end_pos, (box_y_start_pos + FONT_HEIGHT_SIZE_PX + 7)], fill=None, outline='black', width=2)
+        else:
+            drawing.text((BORDER_PADDING_PX, text_start_height), line, font=IMAGE_FONT, fill=('black'))
+            text_start_height = text_start_height + FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX
+
+
+
+    #drawing.text((BORDER_PADDING_PX, BORDER_PADDING_PX), my_code.text, font=IMAGE_FONT, fill=('black'))
     drawing.rectangle([(0,0), (my_code.width_pixels, my_code.height_pixels)], fill=None, outline='black',width=2)
     # border appears as only 1 pixel width along right and bottom sides, so draw an extra line
     drawing.line((1, my_code.height_pixels-2, my_code.width_pixels-1, my_code.height_pixels-2), width=1, fill='black')
