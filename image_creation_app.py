@@ -43,8 +43,7 @@ def create_image(uuid):
 
     #print(no_of_items)
     my_code.width_pixels = (my_code.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
-    my_code.height_pixels = ((my_code.lines - 1) * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + FONT_HEIGHT_SIZE_PX + (BORDER_PADDING_PX * 2) + (no_of_items * (4 + BORDER_PADDING_
-PX))
+    my_code.height_pixels = ((my_code.lines - 1) * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + FONT_HEIGHT_SIZE_PX + (BORDER_PADDING_PX * 2) + (no_of_items * (4 + BORDER_PADDING_PX))
 
     if my_code.width_pixels > MAX_WIDTH_PX:
         my_code.state = "TOO WIDE!"
