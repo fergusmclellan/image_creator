@@ -5,7 +5,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'pip install Pillow --user'
-                    sh 'pip install flask'
+                    sh 'pip install flask gunicorn'
                     sh 'pip list'
                     sh 'wget https://github.com/fergusmclellan/image_creator/raw/testing/cour.ttf'
                 }
