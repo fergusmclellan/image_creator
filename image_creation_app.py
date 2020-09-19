@@ -40,24 +40,32 @@ def no_of_target_or_item_lines(text):
     no_of_padded_lines = 0
     text_by_lines = text.split('\n')
     for line in text_by_lines:
-        if '  item ' in line or '  target  ' in line:
+        if '  item ' in line or '  target' in line:
             no_of_padded_lines += 1
     return no_of_padded_lines
 
 @app.route('/api/create_image/<uuid>', methods=['GET', 'POST'])
 def create_image(uuid):
     content = request.json
-    max_width, no_of_lines = find_lines_and_width(content['code_text'])
+    initial_text = content['code_text']
     target_width, target_no_of_lines = find_lines_and_width(content['target_text'])
     print(content['target_text'])
     print("target max width: " + str(target_width))
     print("target max lines: " + str(target_no_of_lines))
-    my_code = CodeText(content['code_text'], max_width, no_of_lines)
+
+    padding_text = max(0,(target_width - 5))
+    replacement_target_text = "  target" + ('_' * padding_text) + "  "
+    print(replacement_target_text)
+    new_text = re.sub('\s\starget\s\s', replacement_target_text, initial_text, flags=re.DOTALL)
+    print(new_text)
+    max_width, no_of_lines = find_lines_and_width(new_text)
+    my_code = CodeText(new_text, max_width, no_of_lines)
     image_filename = 'output.png'
+    print(my_code.text)
     
     # check for " item X ", where X is a number, or for "  target  ". Text must be surrounded by 2x spaces either side
     item_target_pattern = re.compile(r'\s\sitem\s[0-9]*\s\s')
-    dnd_target_pattern = re.compile(r'\s\starget\s\s')
+    dnd_target_pattern = re.compile(r'\s\starget')
     no_of_items = len(item_target_pattern.findall(my_code.text))
     no_of_targets = len(dnd_target_pattern.findall(my_code.text))
     if no_of_items > 0:
@@ -68,7 +76,8 @@ def create_image(uuid):
     print("padding for option lines:" + str(OPTION_LINE_PADDING_PX))
     print("no of padded lines:" + str(my_code.no_of_padded_lines))
     my_code.width_pixels = (my_code.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
-    my_code.height_pixels = (my_code.lines * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + (BORDER_PADDING_PX * 2) + (my_code.no_of_padded_lines * (2 *  OPTION_LINE_PADDING_PX))
+    my_code.height_pixels = (my_code.lines * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + (BORDER_PADDING_PX * 2) + (my_code.no_of_padded_lines * (2 *  O
+PTION_LINE_PADDING_PX))
 
     if no_of_targets > 0 and my_code.width_pixels > MAX_DND_WIDTH_PX:
         my_code.state = "DND TOO WIDE!"
@@ -81,9 +90,6 @@ def create_image(uuid):
         my_code.text = my_code.state
         my_code.width_pixels = 160
         my_code.height_pixels = 50
-
-    padding_text = max(0,(target_width - 5))
-    replacement_target_text = "  target" + ('.' * padding_text) + "  "
 
     print("image width:" + str(my_code.width_pixels))
     print("image height:" + str(my_code.height_pixels))
@@ -98,7 +104,6 @@ def create_image(uuid):
         item_targets = item_target_pattern.findall(line)
         dnd_targets = dnd_target_pattern.findall(line)
         if (len(item_targets) > 0) or (len(dnd_targets) > 0):
-            line = re.sub('\s\starget\s\s', replacement_target_text, line)
             box_y_start_pos = text_start_height + 3
             print("box_y_start_pos:" + str(box_y_start_pos))
             text_start_height = text_start_height + OPTION_LINE_PADDING_PX
@@ -117,8 +122,6 @@ def create_image(uuid):
         else:
             drawing.text((BORDER_PADDING_PX, text_start_height), line, font=IMAGE_FONT, fill=('black'))
             text_start_height = text_start_height + FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX
-
-
 
     #drawing.text((BORDER_PADDING_PX, BORDER_PADDING_PX), my_code.text, font=IMAGE_FONT, fill=('black'))
     drawing.rectangle([(0,0), (my_code.width_pixels, my_code.height_pixels)], fill=None, outline='black',width=2)
