@@ -76,8 +76,7 @@ def create_image(uuid):
     print("padding for option lines:" + str(OPTION_LINE_PADDING_PX))
     print("no of padded lines:" + str(my_code.no_of_padded_lines))
     my_code.width_pixels = (my_code.width * FONT_WIDTH_SIZE_PX) + (BORDER_PADDING_PX * 2)
-    my_code.height_pixels = (my_code.lines * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + (BORDER_PADDING_PX * 2) + (my_code.no_of_padded_lines * (2 *  O
-PTION_LINE_PADDING_PX))
+    my_code.height_pixels = (my_code.lines * (FONT_HEIGHT_SIZE_PX + LINE_SPACING_PX)) + (BORDER_PADDING_PX * 2) + (my_code.no_of_padded_lines * (2 *  OPTION_LINE_PADDING_PX))
 
     if no_of_targets > 0 and my_code.width_pixels > MAX_DND_WIDTH_PX:
         my_code.state = "DND TOO WIDE!"
